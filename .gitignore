@@ -4,3 +4,4 @@ __pycache__
 migrations
 res
 backend/settings/dev.py
+backend/settings/deploy.py
