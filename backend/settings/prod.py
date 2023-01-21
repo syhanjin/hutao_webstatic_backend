@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 # ==============================================================================
 #  Copyright (C) 2023 Sakuyark, Inc. All Rights Reserved                       =
 #                                                                              =
-#    @Time : 2023-1-20 23:39                                                   =
+#    @Time : 2023-1-21 21:49                                                   =
 #    @Author : hanjin                                                          =
 #    @Email : 2819469337@qq.com                                                =
 #    @File : prod.py                                                           =
@@ -144,7 +144,7 @@ USE_L10N = True
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/hutao_media/'
+MEDIA_URL = '/media/'
 HOST_URL = "http://127.0.0.1"
 
 BASE_URL = "api/hutao/"
