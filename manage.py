@@ -1,12 +1,22 @@
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
+# ==============================================================================
+#  Copyright (C) 2023 Sakuyark, Inc. All Rights Reserved                       =
+#                                                                              =
+#    @Time : 2023-1-21 21:21                                                   =
+#    @Author : hanjin                                                          =
+#    @Email : 2819469337@qq.com                                                =
+#    @File : manage.py                                                         =
+#    @Program: backend                                                         =
+# ==============================================================================
+
 import os
 import sys
 
 
 def main():
     """Run administrative tasks."""
-    # os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings.dev')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', os.environ.get("HUTAO_SETTINGS_MODEL"))
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
