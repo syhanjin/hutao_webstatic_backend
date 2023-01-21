@@ -1,0 +1,6 @@
+.idea
+backend/settings
+!backend/settings/prod.py
+__pycache__
+migrations
+res
