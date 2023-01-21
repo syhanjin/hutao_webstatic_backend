@@ -1,7 +1,7 @@
 # ==============================================================================
 #  Copyright (C) 2023 Sakuyark, Inc. All Rights Reserved                       =
 #                                                                              =
-#    @Time : 2023-1-21 20:3                                                    =
+#    @Time : 2023-1-21 21:40                                                   =
 #    @Author : hanjin                                                          =
 #    @Email : 2819469337@qq.com                                                =
 #    @File : admin.py                                                          =
@@ -52,7 +52,7 @@ def load_hutao_info(voices_json_path):
     if not os.path.exists(voices_json_path):
         raise ValueError()
     voices_json = json.load(open(voices_json_path, "r", encoding="utf-8"))
-    info = Info.objects.create(name="胡桃")
+    info = Info.objects.get(id=ID)
     basic_info_item = [
         BasicInfoItem.objects.create(owner=info, name="姓名", value="胡桃", priority=1000),
         BasicInfoItem.objects.create(owner=info, name="命座", value="蝶之座", priority=2000),
