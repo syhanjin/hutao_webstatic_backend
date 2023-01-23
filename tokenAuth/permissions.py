@@ -1,23 +1,20 @@
-# -*- coding: utf-8 -*-
-
 # ==============================================================================
 #  Copyright (C) 2023 Sakuyark, Inc. All Rights Reserved                       =
 #                                                                              =
-#    @Time : 2023-1-22 19:53                                                   =
+#    @Time : 2023-1-22 16:5                                                    =
 #    @Author : hanjin                                                          =
 #    @Email : 2819469337@qq.com                                                =
-#    @File : serializers.py                                                    =
+#    @File : permissions.py                                                    =
 #    @Program: backend                                                         =
 # ==============================================================================
 
-from rest_framework import serializers
+# -*- coding: utf-8 -*-
+from rest_framework.permissions import BasePermission
 
-from images.models import Image
+from tokenAuth.models import Token
 
 
-class ImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Image
-        fields = ['created', 'url', 'id']
-
-    url = serializers.ImageField(use_url=True, source='image')
+class TokenAuth(BasePermission):
+    def has_permission(self, request, view):
+        token = request.data.get("token")
+        return token and Token.objects.filter(token=token).exists()

@@ -3,7 +3,7 @@
 # ==============================================================================
 #  Copyright (C) 2023 Sakuyark, Inc. All Rights Reserved                       =
 #                                                                              =
-#    @Time : 2023-1-21 19:49                                                   =
+#    @Time : 2023-1-23 22:15                                                   =
 #    @Author : hanjin                                                          =
 #    @Email : 2819469337@qq.com                                                =
 #    @File : serializers.py                                                    =
@@ -11,7 +11,7 @@
 # ==============================================================================
 from rest_framework import serializers
 
-from hutao.models import BasicInfoItem, ExtraInfoItem, Info, Letter, VoiceLang, VoiceLangItem, Voices
+from hutao.models import Album, BasicInfoItem, ExtraInfoItem, Info, Letter, VoiceLang, VoiceLangItem, Voices
 from images.serializers import ImageSerializer
 
 
@@ -30,7 +30,7 @@ class ExtraInfoItemSerializer(serializers.ModelSerializer):
 class InfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Info
-        fields = ("name", "basic_info", "extra_info", "image", "voices")
+        fields = Info.PUBLIC_FIELDS
 
     basic_info = BasicInfoItemSerializer(many=True)
     extra_info = ExtraInfoItemSerializer(many=True)
@@ -77,3 +77,33 @@ class VoicesSerializer(serializers.ModelSerializer):
         fields = ['langs']
 
     langs = VoiceLangSerializer(many=True)
+
+
+class AlbumSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Album
+        fields = Album.SUMMARY_FIELDS
+
+    cover = serializers.ImageField(use_url=True, source="cover.image")
+
+
+class AlbumDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Album
+        fields = Album.PUBLIC_FIELDS
+
+    cover = serializers.ImageField(use_url=True, source="cover.image")
+    # images = serializers.ListSerializer(child=serializers.ImageField(use_url=True, source="image"))
+
+
+class AlbumCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Album
+        fields = Album.REQUIRED_FIELDS + ["token"]
+
+    token = serializers.UUIDField(read_only=True)
+
+
+class AlbumImageUploadSerializer(serializers.Serializer):
+    images = serializers.ListField(child=serializers.ImageField(), min_length=1)
+    token = serializers.UUIDField(read_only=True)

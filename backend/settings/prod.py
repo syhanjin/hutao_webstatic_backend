@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 # ==============================================================================
 #  Copyright (C) 2023 Sakuyark, Inc. All Rights Reserved                       =
 #                                                                              =
-#    @Time : 2023-1-21 21:49                                                   =
+#    @Time : 2023-1-22 15:54                                                   =
 #    @Author : hanjin                                                          =
 #    @Email : 2819469337@qq.com                                                =
 #    @File : prod.py                                                           =
@@ -41,6 +41,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
+    'tokenAuth',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,7 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'hutao',
-    'images'
+    'images',
 ]
 
 SILENCED_SYSTEM_CHECKS = ['fields.E300', 'fields.E307']

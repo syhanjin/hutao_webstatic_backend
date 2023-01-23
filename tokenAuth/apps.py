@@ -1,23 +1,16 @@
-# -*- coding: utf-8 -*-
-
 # ==============================================================================
 #  Copyright (C) 2023 Sakuyark, Inc. All Rights Reserved                       =
 #                                                                              =
-#    @Time : 2023-1-22 19:53                                                   =
+#    @Time : 2023-1-22 15:53                                                   =
 #    @Author : hanjin                                                          =
 #    @Email : 2819469337@qq.com                                                =
-#    @File : serializers.py                                                    =
+#    @File : apps.py                                                           =
 #    @Program: backend                                                         =
 # ==============================================================================
 
-from rest_framework import serializers
-
-from images.models import Image
+from django.apps import AppConfig
 
 
-class ImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Image
-        fields = ['created', 'url', 'id']
-
-    url = serializers.ImageField(use_url=True, source='image')
+class TokenAuthConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'tokenAuth'

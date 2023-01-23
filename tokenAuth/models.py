@@ -1,23 +1,19 @@
-# -*- coding: utf-8 -*-
-
 # ==============================================================================
 #  Copyright (C) 2023 Sakuyark, Inc. All Rights Reserved                       =
 #                                                                              =
-#    @Time : 2023-1-22 19:53                                                   =
+#    @Time : 2023-1-22 12:24                                                   =
 #    @Author : hanjin                                                          =
 #    @Email : 2819469337@qq.com                                                =
-#    @File : serializers.py                                                    =
+#    @File : models.py                                                         =
 #    @Program: backend                                                         =
 # ==============================================================================
 
-from rest_framework import serializers
+import uuid
 
-from images.models import Image
+from django.db import models
 
 
-class ImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Image
-        fields = ['created', 'url', 'id']
-
-    url = serializers.ImageField(use_url=True, source='image')
+# Create your models here.
+class Token(models.Model):
+    token = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
+    created = models.DateTimeField(auto_now=True, editable=False)

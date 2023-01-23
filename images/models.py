@@ -1,7 +1,7 @@
 # ==============================================================================
-#  Copyright (C) 2022 Sakuyark, Inc. All Rights Reserved                       =
+#  Copyright (C) 2023 Sakuyark, Inc. All Rights Reserved                       =
 #                                                                              =
-#    @Time : 2022-12-2 21:26                                                   =
+#    @Time : 2023-1-22 19:29                                                   =
 #    @Author : hanjin                                                          =
 #    @Email : 2819469337@qq.com                                                =
 #    @File : models.py                                                         =
@@ -13,6 +13,12 @@ from django.db import models
 
 
 class ImageManager(models.Manager):
+    def create(self, *args, **kwargs):
+        _id = uuid.uuid4()
+        image = kwargs["image"]
+        image.name = f"{_id.hex}.jpg"
+        return super(ImageManager, self).create(id=_id, image=image)
+
     pass
 
 

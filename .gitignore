@@ -4,3 +4,5 @@ __pycache__
 migrations
 backend/settings/dev.py
 backend/settings/deploy.py
+media/images
+!media/images/001.jpg

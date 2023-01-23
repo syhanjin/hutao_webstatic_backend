@@ -1,7 +1,7 @@
 # ==============================================================================
 #  Copyright (C) 2023 Sakuyark, Inc. All Rights Reserved                       =
 #                                                                              =
-#    @Time : 2023-1-21 19:36                                                   =
+#    @Time : 2023-1-22 22:0                                                    =
 #    @Author : hanjin                                                          =
 #    @Email : 2819469337@qq.com                                                =
 #    @File : models.py                                                         =
@@ -19,6 +19,8 @@ class Info(models.Model):
     name = models.CharField(max_length=128, default="")
     image = models.ForeignKey(Image, on_delete=models.SET_NULL, null=True)
     voices = models.ForeignKey('Voices', on_delete=models.SET_NULL, null=True)
+    albums = models.ManyToManyField("hutao.Album")
+    PUBLIC_FIELDS = ["name", "basic_info", "extra_info", "image", "voices", "albums"]
 
 
 class BasicInfoItem(models.Model):
@@ -66,3 +68,15 @@ class Letter(models.Model):
     content = models.CharField(max_length=2048)
     audio = models.FileField(null=True, default=None)
 
+
+class Album(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, max_length=64)
+    name = models.CharField(max_length=256)
+    description = models.CharField(max_length=2048)
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    updated = models.DateTimeField(auto_now=True, null=True)
+    cover = models.ForeignKey('images.Image', related_name="hutao_album_cover", on_delete=models.SET_NULL, null=True)
+    images = models.ManyToManyField('images.Image', related_name="hutao_album_images")
+    PUBLIC_FIELDS = ["id", "name", "description", "created", "updated", "cover"]
+    SUMMARY_FIELDS = ["id", "name", "cover", "description"]
+    REQUIRED_FIELDS = ["name", "description"]
