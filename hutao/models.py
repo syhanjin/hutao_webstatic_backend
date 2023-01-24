@@ -1,7 +1,7 @@
 # ==============================================================================
 #  Copyright (C) 2023 Sakuyark, Inc. All Rights Reserved                       =
 #                                                                              =
-#    @Time : 2023-1-22 22:0                                                    =
+#    @Time : 2023-1-24 9:20                                                    =
 #    @Author : hanjin                                                          =
 #    @Email : 2819469337@qq.com                                                =
 #    @File : models.py                                                         =
@@ -69,6 +69,12 @@ class Letter(models.Model):
     audio = models.FileField(null=True, default=None)
 
 
+class AlbumManager(models.Manager):
+    def create(self, *args, **kwargs):
+        album = super().create(*args, **kwargs)
+        album.cover = Image.objects.first()
+
+
 class Album(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, max_length=64)
     name = models.CharField(max_length=256)
@@ -77,6 +83,7 @@ class Album(models.Model):
     updated = models.DateTimeField(auto_now=True, null=True)
     cover = models.ForeignKey('images.Image', related_name="hutao_album_cover", on_delete=models.SET_NULL, null=True)
     images = models.ManyToManyField('images.Image', related_name="hutao_album_images")
+    objects = AlbumManager()
     PUBLIC_FIELDS = ["id", "name", "description", "created", "updated", "cover"]
     SUMMARY_FIELDS = ["id", "name", "cover", "description"]
     REQUIRED_FIELDS = ["name", "description"]
