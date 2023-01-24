@@ -1,7 +1,7 @@
 # ==============================================================================
 #  Copyright (C) 2023 Sakuyark, Inc. All Rights Reserved                       =
 #                                                                              =
-#    @Time : 2023-1-22 19:29                                                   =
+#    @Time : 2023-1-24 19:34                                                   =
 #    @Author : hanjin                                                          =
 #    @Email : 2819469337@qq.com                                                =
 #    @File : models.py                                                         =
@@ -19,8 +19,6 @@ class ImageManager(models.Manager):
         image.name = f"{_id.hex}.jpg"
         return super(ImageManager, self).create(id=_id, image=image)
 
-    pass
-
 
 class Image(models.Model):
     class Meta:
@@ -29,7 +27,7 @@ class Image(models.Model):
     image = models.ImageField(upload_to="images")
     id = models.UUIDField(verbose_name="编号", primary_key=True, default=uuid.uuid4, editable=False, max_length=64)
     created = models.DateTimeField(auto_now_add=True, editable=False)
-
+    # deletable = models
     objects = ImageManager()
 
     def __unicode__(self):

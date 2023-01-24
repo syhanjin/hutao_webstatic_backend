@@ -1,14 +1,14 @@
 # ==============================================================================
 #  Copyright (C) 2023 Sakuyark, Inc. All Rights Reserved                       =
 #                                                                              =
-#    @Time : 2023-1-22 21:31                                                   =
+#    @Time : 2023-1-24 22:1                                                    =
 #    @Author : hanjin                                                          =
 #    @Email : 2819469337@qq.com                                                =
 #    @File : views.py                                                          =
 #    @Program: backend                                                         =
 # ==============================================================================
 
-from rest_framework import mixins
+from rest_framework import mixins, status
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
@@ -17,7 +17,9 @@ from rest_framework.viewsets import GenericViewSet
 
 from hutao.models import Album, Info, Letter, Voices
 from hutao.serializers import (
-    AlbumCreateSerializer, AlbumDetailSerializer, AlbumImageUploadSerializer, AlbumSerializer, InfoSerializer,
+    AlbumCreateSerializer, AlbumDetailSerializer, AlbumImageDeleteSerializer, AlbumImageUploadSerializer,
+    AlbumSerializer, AlbumSetCoverSerializer,
+    InfoSerializer,
     LetterDetailSerializer,
     LettersSerializer,
     VoicesSerializer,
@@ -78,10 +80,14 @@ class AlbumViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.Li
             return AlbumCreateSerializer
         elif self.action == "upload":
             return AlbumImageUploadSerializer
+        elif self.action == "set_cover":
+            return AlbumSetCoverSerializer
+        elif self.action == "image_delete":
+            return AlbumImageDeleteSerializer
         return super().get_serializer_class()
 
     def get_permissions(self):
-        if self.action in ["create", "upload"]:
+        if self.action in ["create", "upload", "set_cover", "image_delete"]:
             self.permission_classes = [TokenAuth]
         return super().get_permissions()
 
@@ -96,10 +102,44 @@ class AlbumViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.Li
         obj.save()
         return Response(data={"total": obj.images.count()})
 
+    @action(methods=['post'], detail=True)
+    def image_delete(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        obj = self.get_object()
+        images: list = data["images"]
+        # print(images)
+        filter_images = obj.images.filter(id__in=images)
+        # print(filter_images)
+        # print(filter_images.count(), len())
+        if filter_images.count() != len(images):
+            filter_ids = filter_images.values_list("id", flat=True)
+            errors = [str(i) for i in images if i not in filter_ids]
+            return Response(
+                data={
+                    "images": f"{errors} 不是该图集的图片"
+                }, status=status.HTTP_400_BAD_REQUEST
+            )
+        filter_images.delete()
+        obj.save()
+        return Response(data={"total": obj.images.count()})
+
+    @action(methods=['post'], detail=True)
+    def set_cover(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        obj = self.get_object()
+        obj.cover.delete()
+        obj.cover = Image.objects.create(image=data["cover"])
+        obj.save()
+        return Response(data={"cover": request.build_absolute_uri(obj.cover.image.url)})
+
 
 class AlbumImagePagination(PageNumberPagination):
     # 默认的大小
-    page_size = 50
+    page_size = 24
     page_size_query_param = 'page_size'
     max_page_size = 100
 

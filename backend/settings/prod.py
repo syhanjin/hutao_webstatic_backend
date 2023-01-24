@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 # ==============================================================================
 #  Copyright (C) 2023 Sakuyark, Inc. All Rights Reserved                       =
 #                                                                              =
-#    @Time : 2023-1-22 15:54                                                   =
+#    @Time : 2023-1-24 19:32                                                   =
 #    @Author : hanjin                                                          =
 #    @Email : 2819469337@qq.com                                                =
 #    @File : prod.py                                                           =
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'hutao',
     'images',
+    'django_cleanup.apps.CleanupConfig'
 ]
 
 SILENCED_SYSTEM_CHECKS = ['fields.E300', 'fields.E307']

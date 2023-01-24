@@ -1,7 +1,7 @@
 # ==============================================================================
 #  Copyright (C) 2023 Sakuyark, Inc. All Rights Reserved                       =
 #                                                                              =
-#    @Time : 2023-1-24 9:20                                                    =
+#    @Time : 2023-1-24 14:48                                                   =
 #    @Author : hanjin                                                          =
 #    @Email : 2819469337@qq.com                                                =
 #    @File : models.py                                                         =
@@ -71,8 +71,10 @@ class Letter(models.Model):
 
 class AlbumManager(models.Manager):
     def create(self, *args, **kwargs):
+        kwargs["cover"] = Image.objects.create(image=kwargs["cover"])
         album = super().create(*args, **kwargs)
-        album.cover = Image.objects.first()
+        # album.cover = Image.objects.first()
+        return album
 
 
 class Album(models.Model):
@@ -86,4 +88,4 @@ class Album(models.Model):
     objects = AlbumManager()
     PUBLIC_FIELDS = ["id", "name", "description", "created", "updated", "cover"]
     SUMMARY_FIELDS = ["id", "name", "cover", "description"]
-    REQUIRED_FIELDS = ["name", "description"]
+    REQUIRED_FIELDS = ["name", "description", "cover"]

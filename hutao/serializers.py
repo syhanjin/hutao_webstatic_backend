@@ -3,7 +3,7 @@
 # ==============================================================================
 #  Copyright (C) 2023 Sakuyark, Inc. All Rights Reserved                       =
 #                                                                              =
-#    @Time : 2023-1-24 9:13                                                    =
+#    @Time : 2023-1-24 21:1                                                    =
 #    @Author : hanjin                                                          =
 #    @Email : 2819469337@qq.com                                                =
 #    @File : serializers.py                                                    =
@@ -98,12 +98,24 @@ class AlbumDetailSerializer(serializers.ModelSerializer):
 
 class AlbumCreateSerializer(serializers.ModelSerializer):
     token = serializers.UUIDField(read_only=True)
+    cover = serializers.ImageField()
+    id = serializers.UUIDField(required=False)
 
     class Meta:
         model = Album
-        fields = Album.REQUIRED_FIELDS + ["token"]
+        fields = Album.REQUIRED_FIELDS + ["token", "id"]
 
 
 class AlbumImageUploadSerializer(serializers.Serializer):
     images = serializers.ListField(child=serializers.ImageField(), min_length=1)
+    token = serializers.UUIDField(read_only=True)
+
+
+class AlbumImageDeleteSerializer(serializers.Serializer):
+    images = serializers.ListField(child=serializers.UUIDField(), min_length=1)
+    token = serializers.UUIDField(read_only=True)
+
+
+class AlbumSetCoverSerializer(serializers.Serializer):
+    cover = serializers.ImageField()
     token = serializers.UUIDField(read_only=True)
